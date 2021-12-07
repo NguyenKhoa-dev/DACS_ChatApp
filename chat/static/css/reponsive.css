@@ -1,0 +1,302 @@
+@media (max-width: 850px) {
+    header h1 {
+        font-size: 2em;
+    }
+
+    .content {
+        margin: 0 80px;
+    }
+
+    header #info {
+        position: absolute;
+        top: 20px;
+    }
+
+    .content .in-add-room form {
+        width: 400px;
+    }
+
+    .room-content h2 {
+        font-size: 1.2em;
+    }
+
+    .room-content {
+        flex-direction: column;
+        padding-bottom: 40px;
+    }
+
+    .room-content .left-bx .title-message-bx .btn-group-people {
+        display: flex;
+        align-items: center;
+    }
+
+    .room-content .left-bx {
+        width: 100%;
+    }
+
+    .room-content .right-bx {
+        position: fixed;
+        width: 250px;
+        right: -250px;
+        top: 150px;
+        z-index: 100;
+        transition: ease-in-out 0.5s;
+    }
+
+    .room-content.show .right-bx {
+        right: 40px;
+    }
+
+    .room-content .left-bx #message-list {
+        transition: linear 0.5s;
+    }
+
+    .room-content.show .left-bx #message-list {
+        opacity: 0.1;        
+    }
+
+    .room-content .left-bx #message-form-input {
+        transition: linear 0.5s;
+    }
+
+    .room-content.show .left-bx #message-form-input {
+        opacity: 0.1;        
+    }
+
+    .room-content {
+        padding-bottom: 70px;
+    }
+}
+
+@media (max-width: 620px) {
+    header {
+        height: 100px;
+    }
+
+    header #info #user {
+        display: none;
+    }
+
+    .content {
+        margin: 0 20px;
+    }
+
+    header h1 {
+        text-align: center;
+        padding: 20px 80px;
+    }
+
+    .btn-header {
+        display: none;
+    }
+
+    .room-content .left-bx #message-list {
+        height: 400px;
+    }
+
+    .room-content .right-bx {
+        top: 100px;
+    }
+
+    .room-content .right-bx .list-user {
+        height: 450px;
+    }
+
+    .room-content.show .left-bx .title-message-bx {
+        justify-content: flex-end;
+    }
+
+    .room-content.show .left-bx .title-message-bx h2 {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {    
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    .content .in-add-room form {
+        width: 300px;
+    }
+
+    footer P {
+        font-size: 1em;
+    }
+
+    header #info .setting-menu li a {
+        font-size: 0.8em;
+    }
+
+    .update-room-content .update-room-form {
+        padding: 10px;
+        width: 350px;
+    }
+}
+
+@media (max-width: 350px) {
+    .content .in-add-room {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .content .in-add-room form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content .in-add-room input[type="search"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .content .room .title-room .btn-join {
+        width: 80px;
+        font-size: 0.8em;    
+    }
+
+    .content .room .title-room h2 {
+        font-size: 1em;
+    }
+
+    .content .room .title-room {
+        padding: 10px 10px;
+    }
+
+    .content .room .room-info {
+        padding: 20px 10px;
+    }
+
+    .content .btn-add-room {
+        margin-bottom: 20px;
+    }
+
+    .content .room .room-info .room-menu {
+        width: 60px;
+    }
+
+    .content .room .room-info .room-menu a {
+        margin-left: 0;
+    }
+
+    .content .room .room-info .date-create {
+        padding-right: 0 10px;
+    }
+
+    footer P {
+        font-size: 1em;
+        padding: 0 20px;
+    }
+
+    .room-content {
+        padding: 0 20px;
+        padding-bottom: 50px;
+    }
+
+    .room-content .left-bx #message-form-input {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .room-content .left-bx #message-list {
+        margin-bottom: 0px;
+    }
+
+    .room-content .left-bx #message-form-input #message-input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .room-content .left-bx #message-form-input #btn-send {
+        padding: 10px 0;
+        margin: 0;
+        width: 30%;
+    }
+
+    .list-room .room .title-room .input-room-pwd input[type=password] {
+        width: 150px;
+    }
+
+    .emoji-container {
+        width: 100%;
+    }
+
+    footer P {
+        font-size: 0.8em;
+    }
+
+    .room-content.show .right-bx {
+        right: 20px;
+    }
+
+    .update-room-content .update-room-form .label {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 20px;
+        font-size: 1em;
+    }
+
+    .update-room-content .update-room-form {
+        width: 250px;
+    }
+
+    .update-room-content .update-room-form .label input {
+        width: 100%;
+    }
+
+    .update-room-content .update-room-form #change-room-pwd div {
+        align-items: flex-start;
+        flex-direction: column;
+        font-size: 1em;
+    }
+
+    .update-room-content .update-room-form #change-room-pwd div input {
+        width: 100%;
+    }
+
+    .update-room-content h1 {
+        font-size: 1em;
+    }
+
+    .update-room-content .update-room-form input[type=submit] {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 280px) { 
+    .content .room .room-info .room-menu a {
+        font-size: 0.8em;        
+    }
+
+    .content .room .room-info .date-create {
+        padding-right: 0 10px;
+        font-size: 0.8em;
+    }
+
+    header h1 {
+        padding: 20px 60px;
+    }    
+
+    .room-content {
+        padding: 0 20px;
+        padding-bottom: 40px;
+    }
+
+    .room-content .left-bx #message-list .message-display h3 span {
+        margin-left: 2px;
+    }
+
+    .list-room .room .title-room .input-room-pwd input[type=password] {
+        width: 120px;
+        height: 20px;
+    }
+
+    .list-room .room .title-room .input-room-pwd input[type=submit] {
+        height: 20px;
+    }
+
+    .room-content .right-bx {
+        width: 200px;
+    }
+}

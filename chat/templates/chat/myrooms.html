@@ -1,0 +1,120 @@
+{% extends "chat/base.html" %}
+
+{% block navTop%}
+    <a class="btn-header" href="#header">
+        <ion-icon name="arrow-round-up"></ion-icon>
+    </a>
+{% endblock %}
+
+{% block content %}
+    {% load poll_extras %}
+
+    <div id="message-dialog-delete" style="display: none;">
+        <p id="message-delete"></p>
+    </div>
+    
+    <section class="content">
+
+        <div class="in-add-room">
+            <div class="btn-add-room">+</div>
+            <form method="post"  action="">
+                {% csrf_token %}
+                <input type="search" name="room-name" id="search-room-name" autocomplete="off" placeholder="Search Room Name">
+                <input type="submit" name="search-room" id="search-room" value="Search">
+            </form>            
+        </div>
+
+        <div class="list-room">
+            {%for room in rooms%}
+            <div class="room">
+                <div class="title-room">
+                    <h2 class="title">{{room.name}}</h2>
+                    <a href="{% url 'Chat:room' room.id %}" class="btn-join">Join Now</a>                    
+                </div>
+                <div class="room-info">
+                    <p class="date-create">Created By {{room.user.username}}</p>
+                    <div class="room-menu">
+                        <a href="{% url 'Chat:updateroom' room.id %}">Update</a>
+                        <a class="btnDelete" onclick='showDeleteRoomDialog("{{room.name}}", "{{room.id}}")'>Delete</a>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+    </section>
+
+    {%if messages%}
+        {%for message in messages %}                                    
+            <script>
+                $(document).ready(function() {
+                    $('#message-delete').html("{{message}}")
+                    $('#message-dialog-delete').dialog({
+                    autoOpen: true,
+                    show: {effect: "blind", duration: 500},
+                    hide: {effect: "explode", duration: 500},
+                    height: "auto", 
+                    resizable: false,
+                    title: "Messages"  
+                    })
+                })
+            </script>
+        {%endfor%}    
+    {%endif%} 
+{% endblock %}
+
+{% block script %}
+<script>
+    let btnAddRoom = document.querySelector('.btn-add-room');
+    let divInputRoom = document.querySelector('.input-room');
+    let btnCloseForm = document.querySelector('.btn-close-form');
+    
+    let btnInputPwdRoom = document.querySelectorAll('.btn-input-pwd-room');
+    let divInputRoomPwd = document.querySelectorAll('.input-room-pwd');
+    let btnCloseRoomPwd = document.querySelectorAll('.btn-close-room-pwd');
+
+    for (var i = 0; i < btnInputPwdRoom.length; i++) {
+        btnInputPwdRoom[i].addEventListener('click', function(i) {
+            btnInputPwdRoom[i].parentElement.classList.add('hidden');
+            btnInputPwdRoom[i].classList.add('hidden');
+            divInputRoomPwd[i].classList.add('show');
+        }.bind(this, i));
+    }
+
+    for (var i = 0; i < btnCloseRoomPwd.length; i++) {
+        btnCloseRoomPwd[i].addEventListener('click', function(i) {
+            btnInputPwdRoom[i].parentElement.classList.remove('hidden');
+            btnInputPwdRoom[i].classList.remove('hidden');
+            divInputRoomPwd[i].classList.remove('show');
+        }.bind(this, i));
+    }
+
+    btnAddRoom.onclick = function() {
+        divInputRoom.classList.add('show');
+    }
+
+    btnCloseForm.onclick = function() {
+        divInputRoom.classList.remove('show');
+    }     
+    
+    function showDeleteRoomDialog(room_name, room_id) {
+        $('#message-delete').html("Do you want to delete <span class=\"span-dialog\">&quot;" + room_name + "&quot;</span>");
+        $('#message-dialog-delete').dialog({
+            autoOpen: true,
+            show: {effect: "blind", duration: 200},
+            hide: {effect: "explode", duration: 200},
+            height: "auto", 
+            resizable: false,
+            title: "Messages",
+            modal: true,
+            buttons: {
+                "Yes": function() {
+                    window.location.replace("/delete_room/" + room_id);
+                },
+                "No": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

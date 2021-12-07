@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info</title>
+    <style type="text/css">
+        body{
+            background-color: #f1f1f1;
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .container {
+            margin: 0 auto;
+            width:250px;
+            background-color: white;
+            border-radius: 20px;
+        }
+        .info-user {
+            border: 1px solid #f1f1f1;
+            padding:10px;
+            width: 100%-10px;
+            height: auto;
+            border-radius: 20px;
+        }
+        .info-user div {
+            text-align : center;
+        }
+        input{
+            margin-top: 10px;
+            width: 200px;
+            height: 30px;
+            color: white;
+            background-color:blue;
+            border-radius: 10px;
+            outline: none;
+            border: none;
+            cursor: pointer;
+
+        }
+        .image-container{
+            width:200px;
+            height:200px;
+            border-radius: 50%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .image-container img {
+            width:100%;
+            height:100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="info-user">
+            <div class="image-container">
+                <img src="{{info_entity.imagelink.url}}" alt="img-user"> 
+            </div>
+            <p class="user-name">User Name : </p>
+            <h3>{{username}}</h3>
+            <p class="brithday">Birthday : </p>
+            <h3>{{info_entity.birthday|date:'d/m/Y'}}</h3>
+            <div>
+                <input type="submit" value="Update" class="btn btn-Update" />
+                <br />
+                <input type="submit" value="Change Password" class="btn btn-ChangePassword" />   
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+{% extends "chat/base.html" %}
+
+{% block content %}
+    <section class="room-content">
+        <div class="left-bx">
+            <div class="title-message-bx">
+                <h2>Room Name: <span>{{room_entity.name}}</span></h2>
+                <div class="btn-group-people" onclick="showListUser()"><ion-icon name="people"></ion-icon></div>
+            </div>            
+            <div id="message-list">
+                {% for m in messages%}
+                <div class="message-display">
+                    <h3>{{ m.user.username }}<span class="date-create">{{m.date_added|date:'d/m/Y H:i'}}</span></h3>
+                    <p class="message-content">
+                        {{ m.content }}
+                    </p>
+                </div>                  
+                {% endfor %}             
+            </div>
+            <form id="message-form-input" onsubmit="return false">
+                <input type="text" data-emoji="true" name="message-input" id="message-input" placeholder="Type your messages" autocomplete="off" maxlength="1000" autofocus>
+                <input type="submit" value="Send" id="btn-send">
+            </form>
+        </div>   
+        <div class="right-bx">
+            <h2>List User In Room</h2>
+            <div class="list-user">
+                {% for info in infors %}
+                <div class="user-box">
+                    <div class="avatar"><img src="{{info.imagelink.url}}" alt="avatar-user"></div>
+                    <div class="username">{{info.user}}</div>                    
+                </div>
+                {% endfor %}
+            </div>
+        </div>                                           
+    </section>
+{% endblock %}
+
+{% block script %}
+    {{ room_entity.id|json_script:"json-room_id" }}
+    {{ username|json_script:"json-username" }}
+    <script>        
+        (() => {
+            window.EmojiPicker.init()
+        })()    
+
+        function scrollToBottom() {
+            let objDiv = document.getElementById("message-list");
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
+
+        function showListUser() {
+            let RoomContent = document.querySelector('.room-content');
+            RoomContent.classList.toggle('show');
+        }
+
+        scrollToBottom();
+
+        const roomID = JSON.parse(document.getElementById('json-room_id').textContent);
+        const userName = JSON.parse(document.getElementById('json-username').textContent);
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/'
+            + roomID
+            + '/'
+        );
+
+        chatSocket.onmessage = function (e) {
+            console.log('onmessage');
+
+            const data = JSON.parse(e.data);
+
+            if (data.message) {
+                var html = '<div class="message-display"><h3> ' + data.username + '<span class="date-create">' + data.date + '</span></h3><p class="message-content">' + data.message + '</p></div>'  
+                document.querySelector('#message-list').innerHTML += html;
+                
+            } else {
+                alert('The message is empty!');
+            }
+            scrollToBottom();
+        };
+
+        chatSocket.onclose = function (e) {
+            console.log('The socket close unexpectadly');
+        };
+
+        document.querySelector('#btn-send').onclick = function (e) {
+            const messageInputDom = document.querySelector('#message-input');
+            const message = messageInputDom.value;
+
+            if (message === "") {
+                return;
+            }            
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'username': userName,
+                'room_id': roomID,
+            }));            
+            
+            // alert(message);
+            messageInputDom.value = "";
+        };
+    </script>
+{% endblock %}

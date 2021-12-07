@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"  href="{% static 'css/user-style.css' %}">
+    <link rel="stylesheet"  href="{% static 'css/reponsive-user.css' %}">
+    <link rel="stylesheet" href="{% static 'css/loading.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Login</title>
+</head>
+<body>
+    <div class="load-page">
+        <div class="loadingBx">
+            <div class="loading"></div>
+        </div>
+    </div>
+    <div class="login">
+        <!-- Form Đăng Nhập -->
+        <form class="face sign-in" method="POST" action="">
+            {% csrf_token %}
+            <h2>Sign In</h2>
+            <div class="box">
+                <input type="text" placeholder="Username" name="user_signin" autocomplete="on" required>
+            </div>
+            <div class="box">
+                <input type="password" class="password" placeholder="Password" name="pwd_signin" required>
+                <div class="toggle" onclick="showPassword(0)"></div>
+            </div>
+            <input type="submit" name="Login" value="Login" class="btnLogin">
+            <div class="query">
+                <p>Forgot <a href="#">Password</a>?</p>
+                <p>Create an <span id="sign-up">Account</span>?</p>
+            </div>
+
+            {%if messages%}
+                {%for message in messages %}                                    
+                    <p class="message">{{message}}</p>
+                {%endfor%}    
+            {%endif%}   
+        </form>        
+
+        <!-- Form Đăng Ký -->
+        <form class="face sign-up" method="POST" action="">
+            {% csrf_token %}
+            <h2>Sign UP</h2>
+            <div class="box">
+                <!-- <input type="text" placeholder="Username" name="user_signup"> -->
+                {{form.username}}
+            </div>
+            <div class="box">
+                <!-- <input type="password" class="password" placeholder="Password" name="pwd_signup"> -->
+                {{form.password1}}
+                <div class="toggle" onclick="showPassword(1)"></div>
+            </div>
+            <div class="box">
+                <!-- <input type="password" class="password" placeholder="Confirm Password" name="pwd_signup"> -->
+                {{form.password2}}
+                <div class="toggle" onclick="showPassword(2)"></div>
+            </div>
+            <input type="submit" name="Sign-up" value="Sign up" class="btnLogin">
+            <div class="query">
+                <p>Have an account, <span id="sign-in">Sign In</span>?</p>
+            </div>
+        </form>        
+    </div>   
+    <div class="error">
+        {{form.errors}}
+    </div>     
+</body>
+<script>
+    $(window).on("load", function() {
+        $(".load-page").fadeOut(1000);
+    });
+    let password = document.getElementsByClassName('password');
+    let toggle = document.getElementsByClassName('toggle');
+    let btnSignIn = document.getElementById('sign-in');
+    let btnSignUp = document.getElementById('sign-up');
+    let password1 = document.getElementById('id_password1');
+    let password2 = document.getElementById('id_password2');
+    let username = document.getElementById('id_username');
+
+    const login = document.querySelector('.login');
+
+    password1.className += 'password';
+    password2.className += 'password';
+
+    username.setAttribute('placeholder', 'Username');
+    password1.setAttribute('placeholder', 'Password');
+    password2.setAttribute('placeholder', 'Confirm Password');
+    
+    function showPassword(i) {
+        if (password[i].type === 'password') {
+            password[i].setAttribute('type', 'text');
+            toggle[i].classList.add('hide');
+        }
+        else {
+            password[i].setAttribute('type', 'password');
+            toggle[i].classList.remove('hide');
+        }
+    }
+
+    btnSignUp.onclick = function() {
+        login.classList.add('sign-up');
+    }
+
+    btnSignIn.onclick = function() {
+        login.classList.remove('sign-up');
+    }
+</script>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/index-style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reponsive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/loading.css' %} ">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <title>Chat Application</title>
+</head>
+
+<body>
+    <div class="load-page">
+        <div class="loadingBx">
+            <div class="loading"></div>
+        </div>
+    </div>    
+    <div class="input-room">
+        <form id="form-room-input" method="post" action="">
+            {% csrf_token %}
+            <div class="btn-close-form">
+                <ion-icon name="close-circle"></ion-icon>
+            </div>
+            <div>Room Name</div>
+            <input type="text" name="room-name" id="room-name" autocomplete="off" required maxlength="30">
+            <div>Password</div>
+            <input type="password" name="room-pwd" id="room-pwd">
+            <input type="submit" name="create-room" value="Create New Room">
+        </form>
+    </div>
+
+    {% block navTop%}
+    {% endblock %}
+    <header id="header">
+        <div class="btn-home"><a href="{% url 'Chat:index' %}"><ion-icon name="home"></ion-icon></a></div>
+        <h1>Chat application</h1>
+        <div id="info">
+            <div id="user">
+                <div id="img-user">
+                    <img src="{{info_entity.imagelink.url}}" alt="img-user">
+                </div>
+                <div id="user-name">Welcome,<span>{{info_entity.user}}</span></div>
+            </div>
+            <div id="setting">
+                <ion-icon class="btn-setting" name="settings"></ion-icon>
+            </div>
+            <ul class="setting-menu">
+                <li><div id="btn-view-mode" onclick="changeMode()"><ion-icon name="sunny"></ion-icon>Light Mode</div></li>
+                <li><a href="{% url 'Chat:viewinfo' request.user.username %}">Profile</a></li>
+                <li><a href="{% url 'Chat:myrooms' %}">My Rooms</a></li>
+                <li><a href="{% url 'Chat:logout' %}">Logout</a></li>
+            </ul>
+        </div>
+    </header>
+    {% block content %}
+    {% endblock %}
+    <footer>
+        <p>Copyright &copy by <a href="#">MRL</a>, All Rights Reserved</p>
+    </footer>
+</body>
+
+<script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+<script  src="{% static 'js/script.js' %}"></script>
+<script src="{% static 'js/main-script.js' %}"></script>
+{% block script %}
+{% endblock %}
+</html>
