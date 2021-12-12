@@ -785,7 +785,7 @@ footer P a:hover {
     padding-bottom: 70px;
 }
 
-.update-room-content input[type=text],  input[type=password] {
+.update-room-content input {
     outline: none;
     border: none;
     border-bottom: 1px solid var(--blue1);

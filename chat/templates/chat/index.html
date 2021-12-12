@@ -7,15 +7,7 @@
 {% endblock %}
 
 {% block content %}
-    {% load poll_extras %}
-    <!-- <div id="message-dialog-pwd" style="display: none;">
-        <p class="span-dialog"></p>
-    </div> -->
-
-    <div id="message-dialog-feature" style="display: none;">
-        <p id="message-feature"></p>
-    </div>
-    
+    {% load poll_extras %}    
     <section class="content">
 
         <div class="in-add-room">
@@ -65,24 +57,6 @@
             {%endfor%}
         </div>
     </section>
-
-    {%if messages%}
-        {%for message in messages %}                                    
-            <script>
-                $(document).ready(function() {
-                    $('#message-feature').html("{{message}}")
-                    $('#message-dialog-feature').dialog({
-                    autoOpen: true,
-                    show: {effect: "blind", duration: 500},
-                    hide: {effect: "explode", duration: 500},
-                    height: "auto", 
-                    resizable: false,
-                    title: "Messages"  
-                    })
-                })
-            </script>
-        {%endfor%}    
-    {%endif%} 
 {% endblock %}
 
 {% block script %}

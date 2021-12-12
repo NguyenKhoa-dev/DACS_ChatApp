@@ -3,17 +3,18 @@
 {% block content %}
     {% load poll_extras %}
     <section class="update-room-content">
-        <h1>Update Room: <span>Room Name</span></h1>
-        <form class="update-room-form" action="">
-            <label for="chk-update-room-pwd" onclick="checkChkBox()"><input type="checkbox" id="chk-update-room-pwd">Want to change room's password!</label>
-            <div class="label">Room Name: <input type="text" autocomplete="off" id="room-name-update" required></div>             
-            <div class="label">Password: <input type="password" id="room-pwd-update" required></div>                 
+        <h1>Update Room: <span>{{room.name}}</span></h1>
+        <form class="update-room-form" method="POST" action="">
+            {% csrf_token %}
+            <label for="chk-update-room-pwd" onclick="checkChkBox()"><input type="checkbox" name="chk-update-room-pwd" id="chk-update-room-pwd">Want to change room's password!</label>
+            <div class="label">Room Name: <input type="text" autocomplete="off" name="room-name-update" id="room-name-update"  value="{{room.name}}" required></div>             
+            <div class="label">Password: <input type="password" name="room-pwd-update" id="room-pwd-update"></div>                 
             <div id="change-room-pwd">
-                <div>New Password: <input type="password" id="room-new-pwd-update"></div>                
-                <div>Confirm Password: <input type="password" id="room-confirm-pwd-update"></div>                
+                <div>New Password: <input type="password" name="room-new-pwd-update" id="room-new-pwd-update"></div>                
+                <div>Confirm Password: <input type="password" name="room-confirm-pwd-update" id="room-confirm-pwd-update"></div>                
             </div>           
             <input type="submit" value="Confirm">
-        </form>
+        </form>      
     </section>
 {% endblock %}
 
@@ -22,8 +23,9 @@
     function checkChkBox() {
         let frm = document.querySelector('.update-room-form');
         var chkbx = document.querySelector('#chk-update-room-pwd');
+
         if (chkbx.checked == true) {
-            frm.classList.add('show');
+            frm.classList.add('show'); 
         }
         else {
             frm.classList.remove('show');

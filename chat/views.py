@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.contrib import messages
-from .forms import CreateUserForm, UpdateRoom
+from .forms import CreateUserForm
 from .models import Message, Room, RoomHistory,Information
 from django.http import HttpResponseRedirect
 import datetime
@@ -60,7 +60,7 @@ def room(request, room_id):
     info_entity = Information.objects.filter(user=request.user).first()
     rhs = RoomHistory.objects.filter(room=room_entity)
     infors = [Information.objects.filter(user=rh.user).first() for rh in rhs]
-    return render(request, 'chat/room.html', {'room_entity': room_entity, 'username': username, 'messages': mgs, "info_entity":info_entity,"infors":infors})
+    return render(request, 'chat/room.html', {'room_entity': room_entity, 'username': username, 'messagesUser': mgs, "info_entity":info_entity,"infors":infors})
 
 @login_required(login_url='Chat:user')
 def myrooms(request):
@@ -139,14 +139,32 @@ def escapeRoom(request,room_id):
 @login_required(login_url='Chat:user')
 def updateRoom(request, room_id):
     room = Room.objects.get(id=room_id)
-    if request.method != "POST":
-        form = UpdateRoom(instance=room)
-    else:
-        form = UpdateRoom(instance=room, data=request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    context = {'room': room, 'form': form}
+    info_entity = Information.objects.filter(user=request.user).first()
+
+    if (request.method == "POST"):
+        roomName = request.POST.get('room-name-update')
+        roomPwd = request.POST.get('room-pwd-update')
+        if (room.password == roomPwd):
+            if not 'chk-update-room-pwd' in request.POST:
+                room.name = roomName
+                Room.save(room)
+                messages.info(request, 'Update Room Name successfully')
+                return redirect("Chat:index")
+            else:
+                newPwd = request.POST.get('room-new-pwd-update')
+                confirmPwd = request.POST.get('room-confirm-pwd-update')
+                if newPwd == confirmPwd:
+                    room.name = roomName
+                    room.password = newPwd
+                    Room.save(room)
+                    messages.info(request, 'Update Password successfully')
+                    return redirect("Chat:index")
+                else:
+                    messages.info(request, 'New password and confirm password didn\'t match!')
+        else:
+            messages.info(request, 'Password is incorrect!')
+
+    context = {'room': room, 'username': request.user.username, "info_entity":info_entity}
     return render(request, 'chat/update.html', context)
 
 def logoutUser(request):
@@ -160,4 +178,3 @@ def account_view(request,user_name):
         Information.objects.create(user=request.user,imagelink='/person.png',birthday=d,status=False)
     info_entity = Information.objects.filter(user=request.user).first()  
     return render(request,'user/info.html',{'info_entity':info_entity,'username':request.user.username})
-    

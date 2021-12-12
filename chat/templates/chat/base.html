@@ -58,11 +58,34 @@
             </ul>
         </div>
     </header>
+
+    <div id="message-dialog-feature" style="display: none;">
+        <p id="message-feature"></p>
+    </div>
+
     {% block content %}
     {% endblock %}
     <footer>
         <p>Copyright &copy by <a href="#">MRL</a>, All Rights Reserved</p>
     </footer>
+
+    {%if messages%}
+        {%for message in messages %}                                    
+            <script>
+                $(document).ready(function() {
+                    $('#message-feature').html("{{message}}")
+                    $('#message-dialog-feature').dialog({
+                    autoOpen: true,
+                    show: {effect: "blind", duration: 500},
+                    hide: {effect: "explode", duration: 500},
+                    height: "auto", 
+                    resizable: false,
+                    title: "Messages"  
+                    })
+                })
+            </script>
+        {%endfor%}    
+    {%endif%} 
 </body>
 
 <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>

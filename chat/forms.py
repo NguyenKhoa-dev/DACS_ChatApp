@@ -7,8 +7,3 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'password1', 'password2']
-        
-class UpdateRoom(forms.ModelForm):
-    class Meta:
-        model = Room
-        fields = ['name', 'password']

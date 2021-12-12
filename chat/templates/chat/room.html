@@ -8,7 +8,7 @@
                 <div class="btn-group-people" onclick="showListUser()"><ion-icon name="people"></ion-icon></div>
             </div>            
             <div id="message-list">
-                {% for m in messages%}
+                {% for m in messagesUser%}
                 <div class="message-display">
                     <h3>{{ m.user.username }}<span class="date-create">{{m.date_added|date:'d/m/Y H:i'}}</span></h3>
                     <p class="message-content">
