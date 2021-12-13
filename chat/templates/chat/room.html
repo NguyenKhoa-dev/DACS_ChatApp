@@ -26,11 +26,18 @@
             <h2>List User In Room</h2>
             <div class="list-user">
                  {% for info in infors %}
-                    <div class="user-box">
+                    <!-- <div class="user-box">
                         <div class="avatar"><img src="{{info.imagelink.url}}" alt="avatar-user"></div>
                         <div class="username" id="{{info.user.id}}">{{info.user}} 
                         <small id="status"></small></div> 
-                    </div>
+                    </div> -->
+                    <div class="user-box" id="{{info.user.id}}">
+                        <div class="avatar">
+                            <div class="avatar-img"><img src="{{info.imagelink.url}}" alt="avatar-user"></div>
+                            <div class="status"></div>
+                        </div>
+                        <div class="username">{{info.user}}</div>
+                    </div>     
                 {% endfor %}
             </div>
         </div>                                           
@@ -96,10 +103,10 @@
            }else if(data.type_set==="USERS"){
                 //alert(data.status === "ONLINE")
                 if(data.status == "ONLINE"){
-                    document.getElementById(data.user_id).querySelector('#status').textContent = 'Online'
+                    document.getElementById(data.user_id).classList.add('online')
                     //alert(data.user_id)
                 }else if(data.status == "OFFLINE"){
-                    document.getElementById(data.user_id).querySelector('#status').textContent = ''
+                    document.getElementById(data.user_id).classList.remove('online')
                 }
             }
         };
