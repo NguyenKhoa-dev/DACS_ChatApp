@@ -35,16 +35,18 @@
     }
 
     .room-content .right-bx {
-        position: fixed;
+        position: absolute;
+        display: none;
         width: 250px;
         right: -250px;
         top: 150px;
         z-index: 100;
-        transition: ease-in-out 0.5s;
+        transition: all linear 0.2s;
     }
 
     .room-content.show .right-bx {
         right: 40px;
+        display: block;
     }
 
     .room-content .left-bx #message-list {
