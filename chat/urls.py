@@ -10,6 +10,7 @@ urlpatterns = [
     path('user', views.UserLoginRegister, name='user'),
     path('logout/',views.logoutUser,name='logout'),
     path('info/<str:user_name>/',views.account_view,name='viewinfo'),
+    path('info/<str:user_name>/edit/',views.edit_account_view,name='edit_account'),
     path('chatroom/<int:room_id>', views.room,name='room'),
     path('myrooms/', views.myrooms, name='myrooms'),
     path('delete_room/<int:room_id>', views.deleteRoom, name='deleteroom'),

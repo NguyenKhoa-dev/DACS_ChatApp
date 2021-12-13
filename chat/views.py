@@ -8,6 +8,8 @@ from django.contrib import messages
 from .forms import CreateUserForm
 from .models import Message, Room, RoomHistory,Information
 from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
+
 import datetime
 
 
@@ -178,3 +180,16 @@ def account_view(request,user_name):
         Information.objects.create(user=request.user,imagelink='/person.png',birthday=d,status=False)
     info_entity = Information.objects.filter(user=request.user).first()  
     return render(request,'user/info.html',{'info_entity':info_entity,'username':request.user.username})
+
+@login_required(login_url='Chat:user')
+def edit_account_view(request,user_name):
+    info_entity = Information.objects.filter(user=request.user).first()
+    if request.method == 'POST':
+        user_name_edit = request.POST.get('username')
+        birth_day = request.POST.get('birthday')
+        User.objects.filter(username=request.user).update(username=user_name_edit)
+        Information.objects.filter(user= request.user).update(birthday=birth_day)
+        
+        return redirect('Chat:viewinfo',user_name_edit)
+        
+    return render(request,"user/edit_info.html",{"info_entity":info_entity})

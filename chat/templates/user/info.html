@@ -68,9 +68,12 @@
             <p class="brithday">Birthday : </p>
             <h3>{{info_entity.birthday|date:'d/m/Y'}}</h3>
             <div>
-                <input type="submit" value="Update" class="btn btn-Update" />
-                <br />
-                <input type="submit" value="Change Password" class="btn btn-ChangePassword" />   
+                <div>
+                    <a href="{% url 'Chat:edit_account' request.user.username %}">Update</a>
+                </div>
+                <div>
+                    <a href="">Change Password</a>
+                </div>
             </div>
         </div>
     </div>
