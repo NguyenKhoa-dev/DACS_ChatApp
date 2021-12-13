@@ -36,7 +36,7 @@ def index(request):
     # create info user
     if Information.objects.filter(user=request.user).exists() ==False:
         d= datetime.date(2000,1,1)
-        Information.objects.create(user=request.user,imagelink='/person.png',birthday=d,status=False)
+        Information.objects.create(user=request.user,imagelink='/person.png',birthday=d)
     info_entity = Information.objects.filter(user=request.user).first()
     return render(request, 'chat/index.html', {"rhs": rhs, "rooms": rooms, "user_name": request.user.username,"info_entity":info_entity})
 
@@ -82,7 +82,7 @@ def myrooms(request):
     # create info user
     if Information.objects.filter(user=request.user).exists() == False:
         d= datetime.date(2000,1,1)
-        Information.objects.create(user=request.user,imagelink='/person.png',birthday=d,status=False)
+        Information.objects.create(user=request.user,imagelink='/person.png',birthday=d)
     info_entity = Information.objects.filter(user=request.user).first()
     return render(request, 'chat/myrooms.html', {"rooms": rooms, "user_name": request.user.username,"info_entity":info_entity})
 
@@ -177,7 +177,7 @@ def account_view(request,user_name):
     # getID_room = 
     if Information.objects.filter(user=request.user).exists() ==False:
         d= datetime.date(2000,1,1)
-        Information.objects.create(user=request.user,imagelink='/person.png',birthday=d,status=False)
+        Information.objects.create(user=request.user,imagelink='/person.png',birthday=d)
     info_entity = Information.objects.filter(user=request.user).first()  
     return render(request,'user/info.html',{'info_entity':info_entity,'username':request.user.username})
 

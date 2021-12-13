@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'channels'
 ]
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -142,3 +141,5 @@ MEDIA_ROOT=os.path.join(BASE_DIR, 'imgs')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"

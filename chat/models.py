@@ -6,7 +6,7 @@ class Information(models.Model):
     # Name = models.CharField(max_length=200)
     imagelink = models.ImageField(null=True)
     birthday = models.DateTimeField()
-    status = models.BooleanField(default=False)
+    # status = models.BooleanField(default=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     def __str__(self):
         return self.user.username
@@ -21,6 +21,7 @@ class Room(models.Model):
 class RoomHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.user.username} go to {self.room}"
 

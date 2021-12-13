@@ -25,11 +25,12 @@
         <div class="right-bx">
             <h2>List User In Room</h2>
             <div class="list-user">
-                {% for info in infors %}
-                <div class="user-box">
-                    <div class="avatar"><img src="{{info.imagelink.url}}" alt="avatar-user"></div>
-                    <div class="username">{{info.user}}</div>                    
-                </div>
+                 {% for info in infors %}
+                    <div class="user-box">
+                        <div class="avatar"><img src="{{info.imagelink.url}}" alt="avatar-user"></div>
+                        <div class="username" id="{{info.user.id}}">{{info.user}} 
+                        <small id="status"></small></div> 
+                    </div>
                 {% endfor %}
             </div>
         </div>                                           
@@ -40,10 +41,13 @@
     {{ room_entity.id|json_script:"json-room_id" }}
     {{ username|json_script:"json-username" }}
     <script>        
+        const roomID = JSON.parse(document.getElementById('json-room_id').textContent);
+        const userName = JSON.parse(document.getElementById('json-username').textContent);
+
         (() => {
             window.EmojiPicker.init()
         })()    
-
+      
         function scrollToBottom() {
             let objDiv = document.getElementById("message-list");
             objDiv.scrollTop = objDiv.scrollHeight;
@@ -56,9 +60,7 @@
 
         scrollToBottom();
 
-        const roomID = JSON.parse(document.getElementById('json-room_id').textContent);
-        const userName = JSON.parse(document.getElementById('json-username').textContent);
-
+        
         const chatSocket = new WebSocket(
             'ws://'
             + window.location.host
@@ -67,19 +69,39 @@
             + '/'
         );
 
+        const in_room = () => {
+            setTimeout(() => {
+                chatSocket.send(JSON.stringify({
+                    'status': 'WENT_ONLINE',
+                    'username':userName,
+                    'room_id': roomID,
+                    'type_set':"USERS"
+                }))
+            }, 1000)
+        }
+
         chatSocket.onmessage = function (e) {
             console.log('onmessage');
-
+            
             const data = JSON.parse(e.data);
-
-            if (data.message) {
-                var html = '<div class="message-display"><h3> ' + data.username + '<span class="date-create">' + data.date + '</span></h3><p class="message-content">' + data.message + '</p></div>'  
-                document.querySelector('#message-list').innerHTML += html;
-                
-            } else {
-                alert('The message is empty!');
+            if(data.type_set==="CHAT")
+            {
+                if (data.message) {
+                    var html = '<div class="message-display"><h3> ' + data.username + '<span class="date-create">' + data.date + '</span></h3><p class="message-content">' + data.message + '</p></div>'  
+                    document.querySelector('#message-list').innerHTML += html;
+                } else {
+                    alert('The message is empty!');
+                }
+                scrollToBottom();
+           }else if(data.type_set==="USERS"){
+                //alert(data.status === "ONLINE")
+                if(data.status == "ONLINE"){
+                    document.getElementById(data.user_id).querySelector('#status').textContent = 'Online'
+                    //alert(data.user_id)
+                }else if(data.status == "OFFLINE"){
+                    document.getElementById(data.user_id).querySelector('#status').textContent = ''
+                }
             }
-            scrollToBottom();
         };
 
         chatSocket.onclose = function (e) {
@@ -97,10 +119,13 @@
                 'message': message,
                 'username': userName,
                 'room_id': roomID,
+                'type_set':"CHAT"
             }));            
             
             // alert(message);
             messageInputDom.value = "";
         };
+
+        chatSocket.onopen = in_room()
     </script>
 {% endblock %}
