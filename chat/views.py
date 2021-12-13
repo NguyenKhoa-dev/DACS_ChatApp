@@ -187,9 +187,15 @@ def edit_account_view(request,user_name):
     if request.method == 'POST':
         user_name_edit = request.POST.get('username')
         birth_day = request.POST.get('birthday')
+        image_link = request.FILES.get('profileimage')
+        
         User.objects.filter(username=request.user).update(username=user_name_edit)
-        Information.objects.filter(user= request.user).update(birthday=birth_day)
+        
+        info_entity.birthday= birth_day
+        info_entity.imagelink=image_link
+        info_entity.save()
         
         return redirect('Chat:viewinfo',user_name_edit)
         
     return render(request,"user/edit_info.html",{"info_entity":info_entity})
+

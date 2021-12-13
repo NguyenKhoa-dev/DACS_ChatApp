@@ -3,8 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.fields import NullBooleanField
 
 class Information(models.Model):
-    # Name = models.CharField(max_length=200)
-    imagelink = models.ImageField(null=True)
+    imagelink = models.ImageField(upload_to='users/',null=True,blank = True)
     birthday = models.DateTimeField()
     # status = models.BooleanField(default=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
