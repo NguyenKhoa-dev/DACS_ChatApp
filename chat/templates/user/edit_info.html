@@ -1,192 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Info</title>
-    <style type="text/css">
-        body{
-            background-color: #ccf2ff;
-            display: flex;
-            width: 100%;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+{% extends "chat/base.html" %}
+
+{% block content %}
+    {% load poll_extras %}
+    <div class="content-info edit">
+        <h1>Edit Information</h1>
+        <form class="info-bx"  method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="img-user">
+                <label for="file-upload">
+                    <ion-icon name="camera"></ion-icon>
+                    <input type="file" name="profileimage" id="file-upload">
+                </label>
+                <img id="avatar-info" src="{{info_entity.imagelink.url}}">    
+            </div> 
+            <div class="config-info">
+                <label for="datepicker">User Name: <input type="text" name="username" id="user-name-info" value={{info_entity.user}}></label>  
+                <label for="datepicker">Day of birth: <input type="date" name="birthday" value="{{info_entity.birthday|date:'Y-m-d'}}"></label>  
+                <div class="btn-info">
+                    <button type="submit">Confirm</button>
+                </div>          
+            </div>              
+        </form>         
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    let btnFile = document.querySelector("#file-upload");
+    let img = document.querySelector("#avatar-info");
+
+    btnFile.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const result = reader.result;
+                img.src = result;
+            }
+            reader.readAsDataURL(file);
         }
-        .container {
-            margin: 0 auto;
-            width:250px;
-            background-color: white;
-            border-radius: 20px;
-        }
-        .info-user {
-            border: 1px solid #f1f1f1;
-            padding:10px;
-            width: 100%-10px;
-            height: auto;
-            border-radius: 20px;
-        }
-        .info-user div {
-            text-align : center;
-        }
-        input #btn btn-Save{
-            margin-top: 10px;
-            width: 200px;
-            height: 30px;
-            color: white;
-            background-color:blue;
-            border-radius: 10px;
-            outline: none;
-            border: none;
-            cursor: pointer;
-
-        }
-        .image-container{
-            width:200px;
-            height:200px;
-            border-radius: 50%;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-        .image-container img {
-            width:100%;
-            height:100%;
-            object-fit: cover;
-        }
-		.form-signin .d-none{
-			display: none;
-		}
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="info-user">
-
-            <div class="image-container" id="id_image_container">
-                <img src="{{info_entity.imagelink.url}}" alt="image-user" />
-            </div>
-            <form class="form-signin" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-		  		<input type="file" name="profileimage" onchange="readURL(this)">
-                <h3 class="mt-4 field-heading">Name</h3>
-                <input type="text" name="username" id="input_username" placeholder="UserName" value={{info_entity.user}}>
-                <h3 class="mt-4 field-heading">Birthday</h3>
-                <input type="date" id="birthday" name="birthday" placeholder="Birthday" value="{{info_entity.birthday|date:'Y-d-m'}}">
-				{% for field in form %}
-				<p>
-				{% for error in field.errors %}
-				<p style="color: red">{{ error }}</p>
-				{% endfor %}
-				</p>
-				{% endfor %}
-				{% if form.non_field_errors %}
-				<div style="color: red">
-				<p>{{form.non_field_errors}}</p>
-				</div>
-				{% endif %}
-				<div class="d-flex flex-column mt-4">
-					<button class="mt-4 btn btn-primary flex-grow-1" type="submit">Save</button>
-				</div>
-			</form>
-        </div>
-    </div> 
-</body>
-<script type="text/javascript">
-
-	enableImageOverlay()
-
-	/*
-		Called when a new image is selected from file chooser dialog
-	*/
-	function readURL(input) {
-        if(input.files && input.files[0]){
-			var reader = new FileReader()
-			reader.onload = function(e){
-				disableImageOverlay()
-				var image = e.target.result
-				var imageField = document.getElementById("id_profile_image_display")
-				imageField.src = image
-			}
-			reader.readAsDataURL(input.files[0])
-		}
-    };
-
-	function enableImageOverlay(){
-		var text = document.getElementById("id_text")
-		text.style.backgroundColor = "#0066ff"
-		text.style.color = "white"
-		text.style.fontSize = "16px"
-		text.style.padding = "16px 32px"
-		text.style.cursor = "pointer"
-
-		var profileImage = document.getElementById("id_profile_image")
-		profileImage.style.opacity = "1"
-		profileImage.style.display = "block"
-		profileImage.style.width = "100%"
-		profileImage.style.height = "auto"
-		profileImage.style.transition = ".5s ease"
-		profileImage.style.backfaceVisibility  = "hidden"
-		profileImage.style.cursor = "pointer"
-
-		var middleContainer = document.getElementById("id_middle_container")
-		middleContainer.style.transition = ".5s ease"
-		middleContainer.style.opacity = "0"
-		middleContainer.style.position = "absolute"
-		middleContainer.style.top = "50%"
-		middleContainer.style.left = "50%"
-		middleContainer.style.transform = "translate(-50%, -50%)"
-		middleContainer.style.textAlign = "center"
-
-		var imageContainer = document.getElementById("id_image_container")
-		imageContainer.addEventListener("mouseover", function( event ) { 
-			profileImage.style.opacity = "0.3"
-			middleContainer.style.opacity = "1"
-		})
-
-		imageContainer.addEventListener("mouseout", function( event ) { 
-			profileImage.style.opacity = "1"
-			middleContainer.style.opacity = "0"
-		})
-
-		imageContainer.addEventListener("click", function(event){
-			document.getElementById('id_profile_image').click();
-		});
-		
-	}
-
-	function disableImageOverlay(){
-		var profileImage = document.getElementById("id_profile_image_display")
-		var middleContainer = document.getElementById("id_middle_container")
-		var imageContainer = document.getElementById("id_image_container")
-		var text = document.getElementById("id_text")
-
-		imageContainer.removeEventListener("mouseover", function( event ) { 
-			profileImage.style.opacity = "0.3"
-			middleContainer.style.opacity = "1"
-		})
-
-		imageContainer.removeEventListener("mouseout", function( event ) { 
-			profileImage.style.opacity = "1"
-			middleContainer.style.opacity = "0"
-		})
-
-		profileImage.style.opacity = "1"
-		middleContainer.style.opacity = "0"
-		text.style.cursor = "default"
-		text.style.opacity = "0"
-
-		document.getElementById('id_image_container').removeEventListener("click", function(event){
-			event.preventDefault();
-			// do nothing
-		});
-		document.getElementById('id_profile_image').addEventListener("click", function(event){
-			event.preventDefault();
-			// do nothing
-		});
-	}
-
-	
+    });
 </script>
-</html>
+{% endblock %}

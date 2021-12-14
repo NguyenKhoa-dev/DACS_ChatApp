@@ -1,81 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Info</title>
-    <style type="text/css">
-        body{
-            background-color: #f1f1f1;
-            display: flex;
-            width: 100%;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-        .container {
-            margin: 0 auto;
-            width:250px;
-            background-color: white;
-            border-radius: 20px;
-        }
-        .info-user {
-            border: 1px solid #f1f1f1;
-            padding:10px;
-            width: 100%-10px;
-            height: auto;
-            border-radius: 20px;
-        }
-        .info-user div {
-            text-align : center;
-        }
-        input{
-            margin-top: 10px;
-            width: 200px;
-            height: 30px;
-            color: white;
-            background-color:blue;
-            border-radius: 10px;
-            outline: none;
-            border: none;
-            cursor: pointer;
+{% extends "chat/base.html" %}
 
-        }
-        .image-container{
-            width:200px;
-            height:200px;
-            border-radius: 50%;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-        .image-container img {
-            width:100%;
-            height:100%;
-            object-fit: cover;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="info-user">
-            <div class="image-container">
-                <img src="{{info_entity.imagelink.url}}" alt="img-user"> 
-            </div>
-            <p class="user-name">User Name : </p>
-            <h3>{{username}}</h3>
-            <p class="brithday">Birthday : </p>
-            <h3>{{info_entity.birthday|date:'d/m/Y'}}</h3>
-            <div>
-                <div>
+{% block content %}
+    {% load poll_extras %}
+    <div class="content-info">
+        <h1>Information</h1>
+        <div class="info-bx">
+            <div class="img-user">
+                <img id="avatar-info" src="{{info_entity.imagelink.url}}">    
+            </div> 
+            <div class="config-info">
+                <p class="p-info">User Name: <span>{{username}}</span></p>  
+                <p class="p-info">Day Of Birth: <span>{{info_entity.birthday|date:'d/m/Y'}}</span></p>  
+                <div class="btn-info">
                     <a href="{% url 'Chat:edit_account' request.user.username %}">Update</a>
-                </div>
-                <div>
                     <a href="">Change Password</a>
-                </div>
-            </div>
-        </div>
+                    <a class="btn-delete-acc" href="">Delete Account</a>
+                </div>          
+            </div>              
+        </div>         
     </div>
-</body>
-</html>
+{% endblock %}

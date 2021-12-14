@@ -192,7 +192,8 @@ def edit_account_view(request,user_name):
         User.objects.filter(username=request.user).update(username=user_name_edit)
         
         info_entity.birthday= birth_day
-        info_entity.imagelink=image_link
+        if image_link != None:
+            info_entity.imagelink=image_link
         info_entity.save()
         
         return redirect('Chat:viewinfo',user_name_edit)
